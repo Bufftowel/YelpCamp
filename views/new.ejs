@@ -1,0 +1,21 @@
+<%- include("partials/header.ejs") %>
+<div class="container">
+    <h1 class="text-center">Add New CampGrounds</h1>
+    <div style="width: 30%; margin: 30px auto;">
+        <form action="/campgrounds" method="POST">
+            <div class="form-group">
+                <label for="groundname">Name : </label>
+                <input class="form-control" type="text" name="groundname" id="groundname">
+            </div>
+            <div class="form-group">
+                <label for="groundimage">Image : </label>
+                <input class="form-control" type="url" name="groundimage" id="groundimage">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit!" class="btn btn-primary btn-block">
+            </div>
+        </form>
+        <a href="/campgrounds">Go Back</a>
+    </div>
+</div>
+<%- include("partials/footer.ejs") %>
