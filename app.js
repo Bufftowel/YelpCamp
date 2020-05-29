@@ -1,23 +1,21 @@
 let express = require("express");
+let mongoose = require("mongoose");
 let app = express();
 let port = 3000;
 let bodyParser = require("body-parser");
-let campgrounds = [
-    {name: "Mount", image:"https://images.pexels.com/photos/618848/pexels-photo-618848.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"},
-    {name: "Valley", image:"https://images.unsplash.com/photo-1471115853179-bb1d604434e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1559&q=80"},
-    {name: "Forest", image:"https://images.unsplash.com/photo-1487730116645-74489c95b41b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"},
-    {name: "Mount", image:"https://images.pexels.com/photos/618848/pexels-photo-618848.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"},
-    {name: "Valley", image:"https://images.unsplash.com/photo-1471115853179-bb1d604434e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1559&q=80"},
-    {name: "Forest", image:"https://images.unsplash.com/photo-1487730116645-74489c95b41b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"},
-    {name: "Mount", image:"https://images.pexels.com/photos/618848/pexels-photo-618848.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"},
-    {name: "Valley", image:"https://images.unsplash.com/photo-1471115853179-bb1d604434e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1559&q=80"},
-    {name: "Forest", image:"https://images.unsplash.com/photo-1487730116645-74489c95b41b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"},
-    {name: "Mount", image:"https://images.pexels.com/photos/618848/pexels-photo-618848.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"},
-    {name: "Valley", image:"https://images.unsplash.com/photo-1471115853179-bb1d604434e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1559&q=80"},
-    {name: "Forest", image:"https://images.unsplash.com/photo-1487730116645-74489c95b41b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80"}
-]
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+
+mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser: true});
+
+// schema
+let campgroundSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String
+});
+
+let campground = mongoose.model("campground", campgroundSchema);
 
 app.listen(port, "localhost", () => {
     console.log(`Server has started on port ${port}`);
@@ -30,14 +28,33 @@ app.get("/", (req, res) => {
 });
 
 app.get("/campgrounds", (req, res) => {
-    res.render("campgrounds", {campgrounds : campgrounds});
+    // Getting all campgrounds from db
+    campground.find({}, (err, allCampgrounds) => {
+        if(err)
+            console.log(`Error : ${err}`);
+        else
+            res.render("index", {campgrounds : allCampgrounds});
+    });
 });
 
 app.post("/campgrounds", (req, res) => {
-    campgrounds.push({name : req.body.groundname, image : req.body.groundimage});
-    res.redirect("/campgrounds");
+    campground.create(
+    {
+        name : req.body.groundName,
+        image : req.body.groundImage,
+        description: req.body.groundText
+    }, (err, data) => {
+        if(err)
+            console.log(`Error : ${err}`);
+        else 
+            res.redirect("/index");
+    });
 });
 
 app.get("/campgrounds/new", (req, res) => {
     res.render("new");
+});
+
+app.get("/campgrounds/:id", (req, res) => {
+    res.render("show");
 });

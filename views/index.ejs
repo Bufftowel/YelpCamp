@@ -1,5 +1,5 @@
 <%- include("partials/header.ejs") %>
-<div class="container">
+<div class="container mt-3">
     <header class="jumbotron">
         <div class="container">
             <h1>Welcome to CampGrounds</h1>
@@ -17,7 +17,8 @@
                 <div class="card">
                     <img class="card-img-top" src="<%=element.image%>">   
                     <div class="card-body text-center">                   
-                        <h4 class="card-title"><%= element.name %></h4>   
+                        <h4 class="card-title"><%= element.name %></h4>  
+                        <p class="card-text"><%= element.description %></p> 
                     </div>
                 </div>
             </div>
