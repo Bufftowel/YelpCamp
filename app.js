@@ -1,21 +1,18 @@
-let express = require("express");
-let mongoose = require("mongoose");
-let app = express();
-let port = 3000;
-let bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
+let express     =  require("express");
+let mongoose    = require("mongoose");
+let app         = express();
+let port        = 3000;
+let bodyParser  = require("body-parser");
+let campground  = require("./models/campgound");    // Campground Schema
+let comment     = require("./models/comment");     // Comment Schema
+//let user        = require("./models/user");     // User Schema
+let seedDb      = require("./seed");             // Seed file
+
+seedDb();
 
 mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser: true});
-
-// schema
-let campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-let campground = mongoose.model("campground", campgroundSchema);
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
 
 app.listen(port, "localhost", () => {
     console.log(`Server has started on port ${port}`);
@@ -47,7 +44,7 @@ app.post("/campgrounds", (req, res) => {
         if(err)
             console.log(`Error : ${err}`);
         else 
-            res.redirect("/index");
+            res.redirect("/campgrounds");
     });
 });
 
@@ -55,6 +52,13 @@ app.get("/campgrounds/new", (req, res) => {
     res.render("new");
 });
 
+// show route
 app.get("/campgrounds/:id", (req, res) => {
-    res.render("show");
+    // find campground with requested id
+    campground.findById(req.params.id).populate("comments").exec((err, result) => {
+        if(err)
+            console.log(`Error: ${err}`);
+        else 
+            res.render("show", {campground: result});
+    });
 });
