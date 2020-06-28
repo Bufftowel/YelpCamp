@@ -1,8 +1,11 @@
-<%- include("partials/header.ejs") %>
+<%- include("../partials/header.ejs") %>
     <div class="container">
         <h2><%= campground.name %></h2>
         <img style="float: left" class="my-4 mr-4 ml-0"src="<%= campground.image %>">
         <p><%= campground.description %></p>
+        <p>
+            <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New comment</a>
+        </p>
         <div>
             <h3>Comments</h3>
             <% campground.comments.forEach((comment) => { %>
@@ -12,4 +15,4 @@
             <% }); %>
         </div>
     </div>
-<%- include("partials/footer.ejs") %>
+<%- include("../partials/footer.ejs") %>
