@@ -37,7 +37,8 @@ router.get("/login", middleware.isLoggedOut, (req, res) => {
 
 router.post("/login", middleware.isLoggedOut, passport.authenticate("local", {
         successRedirect : "/campgrounds",
-        failureRedirect : "/login"
+        failureRedirect : "/login",
+        failureFlash : true
     }) , (req, res)=> {
 });
 

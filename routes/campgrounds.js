@@ -24,6 +24,7 @@ router.post("/campgrounds", middleware.isLoggedIn, (req, res) => {
         name : req.body.groundName,
         image : req.body.groundImage,
         description : req.body.groundText,
+        price : Number(req.body.groundPrice),
         author : {
                 id : req.user._id,
                 username : req.user.username
@@ -82,6 +83,7 @@ router.put("/campgrounds/:id", middleware.isAuthorized_Campground, (req, res) =>
         name : req.body.groundName,
         image : req.body.groundImage,
         description : req.body.groundText,
+        price : Number(req.body.groundPrice)
     };
     campground.findByIdAndUpdate(req.params.id , newCampground , (err, updatedCampground) => {
         if(err)
