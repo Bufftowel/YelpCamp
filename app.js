@@ -50,7 +50,7 @@ app.use(indexRoutes);
 app.use(campgroundRoutes);
 app.use(commentRoutes);
 
-app.listen(process.env.PORT, "localhost", () => {
+app.listen(process.env.PORT, () => {
     console.log(`Server has started on port ${process.env.PORT}`);
 });
 
