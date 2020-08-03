@@ -40,7 +40,7 @@ passport.deserializeUser(user.deserializeUser());
 
 app.use(express.static("public"));  //Middleware that will be called on every route.
 app.use(function(req, res, next) {
-    res.locals.currentUser = req.user;   // Passing req.user to the every template;
+    res.locals.currentUser = req.user;   // Passing req.user to the every templat   e;
     res.locals.error = req.flash("error"); // adding flash message to every page
     res.locals.success = req.flash("success"); // adding flash message to every page
     next();        //calling next middleware / callback function.
