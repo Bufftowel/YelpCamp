@@ -1,3 +1,4 @@
 Run mongodb.bat
 mongodb
 node_modules
+.env

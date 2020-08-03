@@ -1,7 +1,6 @@
 let express                 = require("express");
 let mongoose                = require("mongoose");
 let app                     = express();
-let port                    = 3000;
 let bodyParser              = require("body-parser");
 let passport                = require("passport");
 let flash                   = require("connect-flash");
@@ -18,7 +17,9 @@ let commentRoutes           = require("./routes/comments");
 let indexRoutes             = require("./routes/index");
 //seedDb();
 
-mongoose.connect("mongodb://localhost:27017/yelp_camp", {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify : false});
+require("dotenv").config();
+let uri = `mongodb+srv://bufftowel:${process.env.mongoPass}@cluster0-cq1rz.mongodb.net/yelp_camp?retryWrites=true&w=majority`;
+mongoose.connect(uri , {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify : false});
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -49,7 +50,7 @@ app.use(indexRoutes);
 app.use(campgroundRoutes);
 app.use(commentRoutes);
 
-app.listen(port, "localhost", () => {
-    console.log(`Server has started on port ${port}`);
+app.listen(process.env.PORT, "localhost", () => {
+    console.log(`Server has started on port ${process.env.PORT}`);
 });
 
